@@ -3,6 +3,13 @@ package datastructures;
 public class Stack<E> {
 
     private Node<E> top;
+    private Integer size;
+
+    public Stack() {
+
+        size = 0;
+
+    }
 
     public void add(E element) {
 
@@ -17,6 +24,14 @@ public class Stack<E> {
             top = aux;
 
         }
+
+        size += 1;
+
+    }
+
+    public void clear() {
+
+        top = null;
 
     }
 
@@ -42,6 +57,8 @@ public class Stack<E> {
 
             var aux = top;
             top = top.getNextNode();
+
+            size -= 1;
 
             return aux.getElement();
 
