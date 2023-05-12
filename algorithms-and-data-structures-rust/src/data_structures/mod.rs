@@ -1,2 +1,2 @@
-mod stack;
-mod singly_linked_node;
+pub mod stack;
+pub mod singly_linked_node;
