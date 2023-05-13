@@ -60,6 +60,11 @@ where T: Clone
         }
     }
 
+    pub fn is_empty(&self) -> bool
+    {
+        self.size == 0
+    }
+
     pub fn get_size(&self) -> usize
     {
         self.size
