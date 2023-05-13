@@ -11,4 +11,22 @@ impl<T> SinglyLinkedNode<T>
     {
         SinglyLinkedNode { data, next: None }
     }
+
+    pub fn get_next_data(&self) -> Option<T>
+    {
+        if let Some(next) = &self.next
+        {
+            Some(unsafe { std::ptr::read(&next.data) })
+        }
+        else
+        {
+            None
+        }
+    }
+
+    #[inline]
+    pub fn set_next_data(&mut self, elem: T)
+    {
+        self.next = Some(Box::new(SinglyLinkedNode::new(elem)));
+    }
 }
