@@ -12,6 +12,11 @@ impl<T> SinglyLinkedNode<T>
         SinglyLinkedNode { data, next: None }
     }
 
+    pub fn new_with_next(data: T, next: SinglyLinkedNode<T>) -> SinglyLinkedNode<T>
+    {
+        SinglyLinkedNode { data, next: Some(Box::new(next)) }
+    }
+
     pub fn get_next_data(&self) -> Option<T>
     {
         if let Some(next) = &self.next
