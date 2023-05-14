@@ -6,7 +6,6 @@ use super::singly_linked_node::SinglyLinkedNode;
 pub struct SinglyLinkedList<T>
 {
     head: Option<SinglyLinkedNode<T>>,
-    size: usize
 }
 
 impl<T> SinglyLinkedList<T>
@@ -14,7 +13,7 @@ where T: Clone
 {
     pub fn new() -> SinglyLinkedList<T>
     {
-        SinglyLinkedList { head: None, size: 0 }
+        SinglyLinkedList { head: None }
     }
 
     pub fn add(&mut self, elem: T)
@@ -29,7 +28,6 @@ where T: Clone
         {
             self.head = Some(SinglyLinkedNode::new(elem));
         }
-        self.size += 1;
     }
 
     pub fn get_head(&self) -> Option<&SinglyLinkedNode<T>>
