@@ -17,22 +17,18 @@ impl<T> SinglyLinkedNode<T>
         SinglyLinkedNode { data, next: Some(Box::new(next)) }
     }
 
-    pub fn get_next_data(&self) -> Option<T>
+    pub fn get_next_data(&self) -> Option<&T>
     {
-        if let Some(next) = &self.next
-        {
-            Some(unsafe { std::ptr::read(&next.data) })
-        }
-        else
-        {
-            None
-        }
+        self.next.map(|x| {
+            &x.data
+        })
     }
 
-    #[inline]
-    pub fn set_next_data(&mut self, elem: T)
+    pub fn get_next_data_mut(&mut self) -> Option<&mut T>
     {
-        self.next = Some(Box::new(SinglyLinkedNode::new(elem)));
+        self.next.map(|x| {
+            &mut x.data
+        })
     }
 
     // TODO: implement iterator so this can be removed
