@@ -8,8 +8,7 @@ pub struct SinglyLinkedList<T>
     head: Option<SinglyLinkedNode<T>>,
 }
 
-impl<T> SinglyLinkedList<T>
-where T: Clone
+impl<'a, T> SinglyLinkedList<T>
 {
     pub fn new() -> SinglyLinkedList<T>
     {
@@ -38,5 +37,51 @@ where T: Clone
     pub fn get_head_mut(&mut self) -> Option<&mut SinglyLinkedNode<T>>
     {
         self.head.as_mut()
+    }
+
+    pub fn iter(&'a self) -> SinglyLinkedListIterator<'a, T>
+    {
+        SinglyLinkedListIterator { next: self.head.as_ref() }
+    }
+
+    pub fn iter_mut(&'a mut self) -> SinglyLinkedListMutIterator<'a, T>
+    {
+        SinglyLinkedListMutIterator { next: self.head.as_mut() }
+    }
+}
+
+pub struct SinglyLinkedListIterator<'a, T>
+{
+    next: Option<&'a SinglyLinkedNode<T>>,
+}
+
+impl<'a, T> Iterator for SinglyLinkedListIterator<'a, T>
+{
+    type Item = &'a T;
+
+    fn next(&mut self) -> Option<Self::Item>
+    {
+        self.next.map(|node| {
+            self.next = node.next.as_ref().map(|node| &**node);
+            &node.data
+        })
+    }
+}
+
+pub struct SinglyLinkedListMutIterator<'a, T>
+{
+    next: Option<&'a mut SinglyLinkedNode<T>>,
+}
+
+impl<'a, T> Iterator for SinglyLinkedListMutIterator<'a, T>
+{
+    type Item = &'a mut T;
+
+    fn next(&mut self) -> Option<Self::Item>
+    {
+        self.next.take().map(|node| {
+            self.next = node.next.as_mut().map(|next_node| &mut **next_node);
+            &mut node.data
+        })
     }
 }
