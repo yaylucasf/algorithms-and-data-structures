@@ -31,6 +31,11 @@ impl<T> SinglyLinkedNode<T>
         })
     }
 
+    pub fn set_next_with_data(&mut self, data: T)
+    {
+        self.next = Some(Box::new(SinglyLinkedNode::new(data)));
+    }
+
     // TODO: implement iterator so this can be removed
     pub fn get_edge_node(&self) -> &SinglyLinkedNode<T>
     {
