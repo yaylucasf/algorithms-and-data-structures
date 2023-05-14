@@ -19,14 +19,14 @@ impl<T> SinglyLinkedNode<T>
 
     pub fn get_next_data(&self) -> Option<&T>
     {
-        self.next.map(|x| {
+        self.next.as_ref().map(|x| {
             &x.data
         })
     }
 
     pub fn get_next_data_mut(&mut self) -> Option<&mut T>
     {
-        self.next.map(|x| {
+        self.next.as_mut().map(|x| {
             &mut x.data
         })
     }
