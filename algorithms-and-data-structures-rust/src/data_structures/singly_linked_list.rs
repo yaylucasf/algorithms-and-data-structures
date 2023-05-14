@@ -27,7 +27,7 @@ impl<'a, T> SinglyLinkedList<T>
         {
             self.head = Some(SinglyLinkedNode::new(elem));
         }
-    }
+    } 
 
     pub fn get_head(&self) -> Option<&SinglyLinkedNode<T>>
     {
@@ -80,8 +80,37 @@ impl<'a, T> Iterator for SinglyLinkedListMutIterator<'a, T>
     fn next(&mut self) -> Option<Self::Item>
     {
         self.next.take().map(|node| {
-            self.next = node.next.as_mut().map(|next_node| &mut **next_node);
+            self.next = node.next.as_mut().map(|node| &mut **node);
             &mut node.data
         })
+    }
+}
+
+pub struct SinglyLinkedListOwnedIterator<T>
+{
+    next: Option<SinglyLinkedNode<T>>
+}
+
+impl<T> Iterator for SinglyLinkedListOwnedIterator<T>
+{
+    type Item = T;
+
+    fn next(&mut self) -> Option<Self::Item>
+    {
+        self.next.take().map(|node| {
+            self.next = node.next.map(|node| *node);
+            node.data
+        })
+    }
+}
+
+impl<T> IntoIterator for SinglyLinkedList<T>
+{
+    type Item = T;
+    type IntoIter = SinglyLinkedListOwnedIterator<T>;
+
+    fn into_iter(self) -> Self::IntoIter
+    {
+        SinglyLinkedListOwnedIterator { next: self.head }
     }
 }
