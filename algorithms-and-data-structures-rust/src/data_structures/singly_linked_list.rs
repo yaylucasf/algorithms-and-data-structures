@@ -21,13 +21,13 @@ impl<'a, T> SinglyLinkedList<T>
         {
             let edge = head.get_edge_node_mut();
 
-            edge.set_next_data(elem);
+            edge.set_next_with_data(elem);
         }
         else
         {
             self.head = Some(SinglyLinkedNode::new(elem));
         }
-    } 
+    }
 
     pub fn get_head(&self) -> Option<&SinglyLinkedNode<T>>
     {
@@ -62,7 +62,7 @@ impl<'a, T> Iterator for SinglyLinkedListIterator<'a, T>
     fn next(&mut self) -> Option<Self::Item>
     {
         self.next.map(|node| {
-            self.next = node.next.as_ref().map(|node| &**node);
+            self.next = node.next.as_deref();
             &node.data
         })
     }
@@ -80,7 +80,7 @@ impl<'a, T> Iterator for SinglyLinkedListMutIterator<'a, T>
     fn next(&mut self) -> Option<Self::Item>
     {
         self.next.take().map(|node| {
-            self.next = node.next.as_mut().map(|node| &mut **node);
+            self.next = node.next.as_deref_mut();
             &mut node.data
         })
     }
