@@ -19,7 +19,7 @@ impl<'a, T> SinglyLinkedList<T>
     {
         if let Some(head) = &mut self.head
         {
-            let edge = head.get_edge_node_mut();
+            let edge = head.iter_mut().last().unwrap();
 
             edge.set_next_with_data(elem);
         }

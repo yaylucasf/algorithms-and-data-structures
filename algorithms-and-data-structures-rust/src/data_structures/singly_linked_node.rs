@@ -43,37 +43,6 @@ impl<'a, T> SinglyLinkedNode<T>
         self.next.as_mut().unwrap().next = old_next;
     }
 
-    // TODO: implement iterator so this can be removed
-    pub fn get_edge_node(&self) -> &SinglyLinkedNode<T>
-    {
-        let mut cur = self as *const SinglyLinkedNode<T>;
-
-        unsafe
-        {
-            while let Some(next) = &(*cur).next
-            {
-                let a = next.as_ref() as *const SinglyLinkedNode<T>;
-                cur = a;
-            }
-            cur.as_ref().unwrap()
-        }
-    }
-
-    pub fn get_edge_node_mut(&mut self) -> &mut SinglyLinkedNode<T>
-    {
-        let mut cur = self as *mut SinglyLinkedNode<T>;
-
-        unsafe
-        {
-            while let Some(next) = &mut (*cur).next
-            {
-                let a = next.as_mut() as *mut SinglyLinkedNode<T>;
-                cur = a;
-            }
-            cur.as_mut().unwrap()
-        }
-    }
-
     pub fn iter(&'a self) -> SinglyLinkedNodeIterator<'a, T>
     {
         SinglyLinkedNodeIterator { next: Some(self) }
