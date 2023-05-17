@@ -109,16 +109,13 @@ pub struct SinglyLinkedNodeMutIterator<'a, T: 'a>
     next: Option<&'a mut SinglyLinkedNode<T>>
 }
 
-impl<'a, T: std::fmt::Debug> Iterator for SinglyLinkedNodeMutIterator<'a, T>
+impl<'a, T> Iterator for SinglyLinkedNodeMutIterator<'a, T>
 {
     type Item = &'a mut SinglyLinkedNode<T>;
 
     fn next(&mut self) -> Option<Self::Item>
     {
-        print!("so ");
-        println!("what's next? {:?}!", self.next);
         self.next.take().map(|node| {
-            println!(":)");
             let ret = unsafe { std::ptr::read(&node) };
             self.next = node.next.as_deref_mut();
             ret
