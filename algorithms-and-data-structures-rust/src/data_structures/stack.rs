@@ -4,11 +4,12 @@ use super::singly_linked_node::SinglyLinkedNode;
 pub struct Stack<T>
 {
     top: Option<Box<SinglyLinkedNode<T>>>,
-    size: usize
+    size: usize,
 }
 
 impl<T> Stack<T>
-where T: Clone
+where
+    T: Clone,
 {
     pub fn new() -> Stack<T>
     {
@@ -21,7 +22,7 @@ where T: Clone
         if let Some(top_node) = &self.top
         {
             let mut new_top = SinglyLinkedNode::new(elem);
-            new_top.next = Some( top_node.clone() );
+            new_top.next = Some(top_node.clone());
 
             self.top = Some(Box::new(new_top));
         }
@@ -39,7 +40,7 @@ where T: Clone
             let ret_data = top_node.data.clone();
             self.top = top_node.next.clone();
             self.size -= 1;
-  
+
             Some(ret_data)
         }
         else
