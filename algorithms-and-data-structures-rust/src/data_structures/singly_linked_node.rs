@@ -2,7 +2,7 @@
 pub struct SinglyLinkedNode<T>
 {
     pub data: T,
-    pub next: Option<Box<SinglyLinkedNode<T>>>
+    pub next: Option<Box<SinglyLinkedNode<T>>>,
 }
 
 impl<'a, T> SinglyLinkedNode<T>
@@ -14,26 +14,32 @@ impl<'a, T> SinglyLinkedNode<T>
 
     pub fn new_with_next(data: T, next: SinglyLinkedNode<T>) -> SinglyLinkedNode<T>
     {
-        SinglyLinkedNode { data, next: Some(Box::new(next)) }
+        SinglyLinkedNode {
+            data,
+            next: Some(Box::new(next)),
+        }
     }
 
     pub fn get_next_data(&self) -> Option<&T>
     {
-        self.next.as_ref().map(|x| {
-            &x.data
-        })
+        self.next.as_ref().map(|x| &x.data)
     }
 
     pub fn get_next_data_mut(&mut self) -> Option<&mut T>
     {
-        self.next.as_mut().map(|x| {
-            &mut x.data
-        })
+        self.next.as_mut().map(|x| &mut x.data)
     }
 
     pub fn set_next_with_data(&mut self, data: T)
     {
         self.next = Some(Box::new(SinglyLinkedNode::new(data)));
+    }
+
+    pub fn delete_cur(&mut self)
+    {
+        self.next.take().map(|node| {
+            *self = *node;
+        });
     }
 
     pub fn insert(&mut self, other: SinglyLinkedNode<T>)
@@ -57,7 +63,7 @@ impl<'a, T> SinglyLinkedNode<T>
 #[derive(Debug)]
 pub struct SinglyLinkedNodeIterator<'a, T>
 {
-    next: Option<&'a SinglyLinkedNode<T>>
+    next: Option<&'a SinglyLinkedNode<T>>,
 }
 
 impl<'a, T> Iterator for SinglyLinkedNodeIterator<'a, T>
@@ -69,13 +75,13 @@ impl<'a, T> Iterator for SinglyLinkedNodeIterator<'a, T>
         self.next.map(|node| {
             self.next = node.next.as_deref();
             node
-        })   
+        })
     }
 }
 
 pub struct SinglyLinkedNodeMutIterator<'a, T: 'a>
 {
-    next: Option<&'a mut SinglyLinkedNode<T>>
+    next: Option<&'a mut SinglyLinkedNode<T>>,
 }
 
 impl<'a, T> Iterator for SinglyLinkedNodeMutIterator<'a, T>
@@ -94,7 +100,7 @@ impl<'a, T> Iterator for SinglyLinkedNodeMutIterator<'a, T>
 
 pub struct SinglyLinkedNodeOwnedIterator<T>
 {
-    next: Option<SinglyLinkedNode<T>>
+    next: Option<SinglyLinkedNode<T>>,
 }
 
 impl<T> Iterator for SinglyLinkedNodeOwnedIterator<T>
@@ -106,7 +112,7 @@ impl<T> Iterator for SinglyLinkedNodeOwnedIterator<T>
         self.next.take().map(|mut node| {
             self.next = node.next.take().map(|n| *n);
             node
-        })   
+        })
     }
 }
 
@@ -117,6 +123,8 @@ impl<T> IntoIterator for SinglyLinkedNode<T>
 
     fn into_iter(self) -> Self::IntoIter
     {
-        SinglyLinkedNodeOwnedIterator { next: self.next.map(|n| *n) }
+        SinglyLinkedNodeOwnedIterator {
+            next: self.next.map(|n| *n),
+        }
     }
 }
