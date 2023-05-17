@@ -5,7 +5,7 @@ pub struct SinglyLinkedNode<T>
     pub next: Option<Box<SinglyLinkedNode<T>>>
 }
 
-impl<T> SinglyLinkedNode<T>
+impl<'a, T> SinglyLinkedNode<T>
 {
     pub fn new(data: T) -> SinglyLinkedNode<T>
     {
@@ -34,6 +34,13 @@ impl<T> SinglyLinkedNode<T>
     pub fn set_next_with_data(&mut self, data: T)
     {
         self.next = Some(Box::new(SinglyLinkedNode::new(data)));
+    }
+
+    pub fn insert(&mut self, other: SinglyLinkedNode<T>)
+    {
+        let old_next = self.next.take();
+        self.next = Some(Box::new(other));
+        self.next.as_mut().unwrap().next = old_next;
     }
 
     // TODO: implement iterator so this can be removed
@@ -65,5 +72,85 @@ impl<T> SinglyLinkedNode<T>
             }
             cur.as_mut().unwrap()
         }
+    }
+
+    pub fn iter(&'a self) -> SinglyLinkedNodeIterator<'a, T>
+    {
+        SinglyLinkedNodeIterator { next: Some(self) }
+    }
+
+    pub fn iter_mut(&'a mut self) -> SinglyLinkedNodeMutIterator<'a, T>
+    {
+        SinglyLinkedNodeMutIterator { next: Some(self) }
+    }
+}
+
+#[derive(Debug)]
+pub struct SinglyLinkedNodeIterator<'a, T>
+{
+    next: Option<&'a SinglyLinkedNode<T>>
+}
+
+impl<'a, T> Iterator for SinglyLinkedNodeIterator<'a, T>
+{
+    type Item = &'a SinglyLinkedNode<T>;
+
+    fn next(&mut self) -> Option<Self::Item>
+    {
+        self.next.map(|node| {
+            self.next = node.next.as_deref();
+            node
+        })   
+    }
+}
+
+pub struct SinglyLinkedNodeMutIterator<'a, T: 'a>
+{
+    next: Option<&'a mut SinglyLinkedNode<T>>
+}
+
+impl<'a, T: std::fmt::Debug> Iterator for SinglyLinkedNodeMutIterator<'a, T>
+{
+    type Item = &'a mut SinglyLinkedNode<T>;
+
+    fn next(&mut self) -> Option<Self::Item>
+    {
+        print!("so ");
+        println!("what's next? {:?}!", self.next);
+        self.next.take().map(|node| {
+            println!(":)");
+            let ret = unsafe { std::ptr::read(&node) };
+            self.next = node.next.as_deref_mut();
+            ret
+        })
+    }
+}
+
+pub struct SinglyLinkedNodeOwnedIterator<T>
+{
+    next: Option<SinglyLinkedNode<T>>
+}
+
+impl<T> Iterator for SinglyLinkedNodeOwnedIterator<T>
+{
+    type Item = SinglyLinkedNode<T>;
+
+    fn next(&mut self) -> Option<Self::Item>
+    {
+        self.next.take().map(|mut node| {
+            self.next = node.next.take().map(|n| *n);
+            node
+        })   
+    }
+}
+
+impl<T> IntoIterator for SinglyLinkedNode<T>
+{
+    type Item = SinglyLinkedNode<T>;
+    type IntoIter = SinglyLinkedNodeOwnedIterator<T>;
+
+    fn into_iter(self) -> Self::IntoIter
+    {
+        SinglyLinkedNodeOwnedIterator { next: self.next.map(|n| *n) }
     }
 }
