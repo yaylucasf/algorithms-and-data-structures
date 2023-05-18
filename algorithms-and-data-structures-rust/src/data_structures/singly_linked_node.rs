@@ -75,13 +75,6 @@ impl<'a, T> SinglyLinkedNode<T>
         Some(cur)
     }
 
-    pub fn delete_cur(&mut self)
-    {
-        self.next.take().map(|node| {
-            std::mem::replace(self, *node);
-        });
-    }
-
     pub fn insert(&mut self, other: SinglyLinkedNode<T>)
     {
         let old_next = self.next.take();
