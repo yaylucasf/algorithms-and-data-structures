@@ -10,20 +10,21 @@ use super::singly_linked_node::SinglyLinkedNode;
 pub struct SinglyLinkedList<T>
 {
     head: Option<SinglyLinkedNode<T>>,
+    size: usize
 }
 
 impl<'a, T> SinglyLinkedList<T>
 {
     pub fn new() -> SinglyLinkedList<T>
     {
-        SinglyLinkedList { head: None }
+        SinglyLinkedList { head: None, size: 0 }
     }
 
     pub fn add(&mut self, elem: T)
     {
         if let Some(head) = &mut self.head
         {
-            let edge = head.iter_mut().last().unwrap();
+            let edge = head.get_nth_mut(self.size - 1).unwrap();
 
             edge.set_next_with_data(elem);
         }
@@ -31,6 +32,7 @@ impl<'a, T> SinglyLinkedList<T>
         {
             self.head = Some(SinglyLinkedNode::new(elem));
         }
+        self.size += 1;
     }
 
     pub fn get_head(&self) -> Option<&SinglyLinkedNode<T>>
