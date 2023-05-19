@@ -3,7 +3,7 @@ use super::singly_linked_node::SinglyLinkedNode;
 #[derive(Debug, Clone)]
 pub struct Stack<T>
 {
-    top: Option<Box<SinglyLinkedNode<T>>>,
+    top: Option<SinglyLinkedNode<T>>,
     size: usize,
 }
 
@@ -22,13 +22,13 @@ where
         if let Some(top_node) = &self.top
         {
             let mut new_top = SinglyLinkedNode::new(elem);
-            new_top.next = Some(top_node.clone());
+            new_top.next = Some(Box::new(top_node.clone()));
 
-            self.top = Some(Box::new(new_top));
+            self.top = Some(new_top);
         }
         else
         {
-            self.top = Some(Box::new(SinglyLinkedNode::new(elem)));
+            self.top = Some(SinglyLinkedNode::new(elem));
         }
         self.size += 1;
     }
@@ -38,7 +38,7 @@ where
         if let Some(top_node) = &mut self.top
         {
             let ret_data = top_node.data.clone();
-            self.top = top_node.next.clone();
+            self.top = top_node.next.take().map(|node| *node);
             self.size -= 1;
 
             Some(ret_data)
