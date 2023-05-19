@@ -35,6 +35,34 @@ impl<'a, T> SinglyLinkedList<T>
         self.size += 1;
     }
 
+    pub fn insert_at_head(&mut self, data: T)
+    {
+        if let Some(head) = self.head.take()
+        {
+            let mut other = SinglyLinkedNode::new(data);
+            other.next = Some(Box::new(head));
+            self.head = Some(other);
+        }
+        else
+        {
+            self.head = Some(SinglyLinkedNode::new(data));
+        }
+        self.size += 1;
+    }
+
+    pub fn insert_at_end(&mut self, data: T)
+    {
+        if let Some(head) = &mut self.head
+        {
+            head.get_nth_mut(self.size - 1).unwrap().insert_next(SinglyLinkedNode::new(data));
+            self.size += 1;
+        }
+        else
+        {
+            self.insert_at_head(data);
+        }
+    }
+
     pub fn delete_head(&mut self)
     {
         self.head.take().map(|head| {
