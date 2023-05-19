@@ -75,7 +75,7 @@ impl<'a, T> SinglyLinkedNode<T>
         Some(cur)
     }
 
-    pub fn insert(&mut self, other: SinglyLinkedNode<T>)
+    pub fn insert_next(&mut self, other: SinglyLinkedNode<T>)
     {
         let old_next = self.next.take();
         self.next = Some(Box::new(other));
