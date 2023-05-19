@@ -2,9 +2,13 @@ name: Rust implementations
 
 on:
   push:
-    branches: [ "main", "yayakame-wip-rustdev" ]
+    branches: 
+      - main
+      - yayakame-wip-rustdev
   pull_request:
-    branches: [ "main", "yayakame-wip-rustdev" ]
+    branches:
+      - main
+      - yayakame-wip-rustdev
 
 env:
   CARGO_TERM_COLOR: always
