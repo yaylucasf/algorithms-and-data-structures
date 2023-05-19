@@ -7,7 +7,7 @@ pub struct SinglyLinkedNode<T>
     pub next: Option<Box<SinglyLinkedNode<T>>>,
 }
 
-impl<'a, T> SinglyLinkedNode<T>
+impl<T> SinglyLinkedNode<T>
 {
     pub fn new(data: T) -> SinglyLinkedNode<T>
     {
@@ -41,7 +41,7 @@ impl<'a, T> SinglyLinkedNode<T>
     {
         let mut cur = self;
 
-        for i in 0..n
+        for _ in 0..n
         {
             if let Some(next) = cur.next.as_deref()
             {
@@ -60,7 +60,7 @@ impl<'a, T> SinglyLinkedNode<T>
     {
         let mut cur = self;
 
-        for i in 0..n
+        for _ in 0..n
         {
             if let Some(next) = cur.next.as_deref_mut()
             {
