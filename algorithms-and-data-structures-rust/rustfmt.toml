@@ -1,0 +1,4 @@
+unstable_features = true
+binop_separator = "Back"
+brace_style = "AlwaysNextLine"
+control_brace_style = "AlwaysNextLine"
