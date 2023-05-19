@@ -16,13 +16,12 @@ where
         Stack { top: None, size: 0 }
     }
 
-    // TODO: potentially make add and pop use unsafe methods for performance
     pub fn add(&mut self, elem: T)
     {
-        if let Some(top_node) = &self.top
+        if let Some(top_node) = self.top.take()
         {
             let mut new_top = SinglyLinkedNode::new(elem);
-            new_top.next = Some(Box::new(top_node.clone()));
+            new_top.next = Some(Box::new(top_node));
 
             self.top = Some(new_top);
         }
@@ -35,7 +34,7 @@ where
 
     pub fn pop(&mut self) -> Option<T>
     {
-        if let Some(top_node) = &mut self.top
+        if let Some(mut top_node) = self.top.take()
         {
             let ret_data = top_node.data.clone();
             self.top = top_node.next.take().map(|node| *node);
