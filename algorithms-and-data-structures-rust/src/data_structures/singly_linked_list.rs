@@ -35,6 +35,32 @@ impl<'a, T> SinglyLinkedList<T>
         self.size += 1;
     }
 
+    pub fn delete_head(&mut self)
+    {
+        self.head.take().map(|head| {
+            self.head = head.next.map(|node| {
+                *node
+            });
+            self.size -= 1;
+        });
+    }
+
+    pub fn delete_last(&mut self)
+    {
+        if let Some(head) = &mut self.head
+        {
+            if self.size == 1 // only node is the head
+            {
+                self.delete_head();
+            }
+            else
+            {
+                head.get_nth_mut(self.size - 2).unwrap().next = None;
+                self.size -= 1;
+            }
+        }
+    }
+
     pub fn get_head(&self) -> Option<&SinglyLinkedNode<T>>
     {
         self.head.as_ref()
