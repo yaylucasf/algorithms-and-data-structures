@@ -4,7 +4,7 @@ public class LinkedList<E> {
 
     private Node<E> front;
     private Node<E> back;
-    private Integer size;
+    private Integer size;  // int
 
     public LinkedList() {
 
